@@ -5,9 +5,8 @@ import {HangmanWord} from "./HangmanWord.tsx";
 import {Keyboard} from "./Keyboard.tsx";
 
 function App() {
-    const [wordToGuess, setWordToGuess] = useState<string>(() => {
-        return words[Math.floor(Math.random() * words.length)]
-    });
+    const getWord = () => words[Math.floor(Math.random() * words.length)];
+    const [wordToGuess, setWordToGuess] = useState<string>(getWord);
 
     const [guessedLetters, setGuessedLetters] = useState<string[]>([])
 
@@ -41,14 +40,29 @@ function App() {
         }
     }, [guessedLetters]);
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const key = e.key;
+            if (key !== "Enter") return;
+
+            e.preventDefault()
+            setGuessedLetters([]);
+            setWordToGuess(getWord());
+        }
+        document.addEventListener("keypress", handleKeyDown)
+
+
+        return () => {
+            document.removeEventListener("keypress", handleKeyDown)
+        }
+    }, [guessedLetters]);
+
     return (
-        <div className={"flex flex-col m-auto gap-4 items-center max-w-[800px]"}>
-            {isLoser && (
-                <div>Refresh to play again</div>
-            )}
-            {isWinner && (
-                <div>You won! Refresh to play again</div>
-            )}
+        <div className={"flex flex-col  mx-auto gap-4 items-center max-w-[800px]"}>
+            <div className={"text-center"}>
+                {isWinner && "You win! refresh to play again"}
+                {isLoser && "You lost! refresh to play again"}
+            </div>
             <HangmanDrawing numberOfGuesses={incorrectLetters.length}/>
             <HangmanWord reveal={isLoser} guessedLetters={guessedLetters} wordToGuess={wordToGuess}/>
             <Keyboard

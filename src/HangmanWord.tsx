@@ -5,7 +5,8 @@ export function HangmanWord({guessedLetters, wordToGuess, reveal=false}: {guesse
                 <span key={index} style={{borderBottom: ".1em solid black"}}>
                     <span
                     style={{
-                        visibility: guessedLetters.includes(letter) || reveal ? "visible" : "hidden"
+                        visibility: guessedLetters.includes(letter) || reveal ? "visible" : "hidden",
+                        color: !guessedLetters.includes(letter) && reveal ? "red" : "black"
                     }}>{letter}</span>
                 </span>
             ))}
