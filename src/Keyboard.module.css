@@ -1,0 +1,20 @@
+.btn{
+    @apply
+    w-12 h-12 border-2 text-2xl border-black cursor-pointer uppercase;
+}
+
+.btn:hover:not(:disabled),
+.btn:focus:not(:disabled){
+    @apply
+    bg-red-200;
+}
+
+.btn.active{
+    @apply
+    bg-red-200 text-white;
+}
+
+.btn.inactive{
+    @apply
+    opacity-20;
+}
